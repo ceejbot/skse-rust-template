@@ -1,0 +1,24 @@
+[package]
+edition      = "2021"
+name         = "skse-rust-template"
+rust-version = "1.71.1"
+version      = "0.1.0"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+byte-slice-cast = "1.2.2"
+chardet         = "0.2.4"
+cxx             = { version = "1.0.110", features = ["c++20"] }
+log             = "0.4.20"
+rust-ini        = "0.20.0"
+simplelog       = "0.12.1"
+textcode        = "0.2.2"
+ucs2            = "0.3.2"
+
+[build-dependencies]
+cxx-build = "1.0.110"
+
+[profile.release]
+debug = true

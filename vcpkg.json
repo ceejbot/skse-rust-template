@@ -1,0 +1,15 @@
+{
+  "name": "skse-rust-template",
+  "version-string": "0.1.0",
+  "description": "A template for SKSE plugins written with Rust.",
+  "homepage": "https://github.com/ceejbot/skse-rust-template",
+  "license": "Parity-7.0.0",
+  "dependencies": [
+    "fmt",
+    "spdlog",
+    "rapidcsv",
+    "directxtk",
+    "rsm-binary-io",
+    "boost-stl-interfaces"
+  ]
+}

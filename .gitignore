@@ -1,0 +1,9 @@
+/target
+build
+.env
+.vscode
+.vs
+.DS_Store
+/vcpkg_installed
+**/unused
+/Cargo.lock
