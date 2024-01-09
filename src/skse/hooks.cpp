@@ -1,7 +1,7 @@
 #include "hooks.h"
 
-void installFunctionHooks() {}
-
+// Maybe there are more than just the player hook you want to install?
+void installFunctionHooks() { PlayerHook::install(); }
 
 // ---------- PlayerHook
 
@@ -81,6 +81,11 @@ void PlayerHook::add_item_functor(RE::TESObjectREFR* a_this, RE::TESObjectREFR* 
 void PlayerHook::notifyInventoryChanged(RE::TESForm* item_form)
 {
 	if (!item_form) { return; }
+
+	// note that we must make sure the item name is valid utf8 before we log it.
+	// if we do not, we crash.
+	const auto safename = util::nameAsUtf8(item_form);
+	rlog::info("inventory change for item '{}'", safename);
 
 	// pour your implementation of something useful to do here!
 }
