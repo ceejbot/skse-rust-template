@@ -16,9 +16,8 @@ _help:
 full-build: submodules tools cmake build
 
 # Wrangle git submodules
-submodules:
-	git submodule init
-	git submodule update --recursive
+@submodules:
+	git submodule update --init --recursive
 
 # Install all tools.
 [unix]
@@ -42,7 +41,6 @@ tools:
 tools:
 	rustup install nightly
 	cargo install cargo-nextest
-	# vcpkg.exe install boost --triplet x64-windows-static
 
 # Run cmake to generate build files.
 cmake:
