@@ -1,6 +1,6 @@
 # skse-rust-template
 
-This is Ceej's template for setting up a repo for new Rust + CommonLibSSE-NG SKSE plugins. This is a hybrid approach, where you can mix and match C++ with Rust as you see fit.
+This is Ceej's template for setting up a repo for new Rust + CommonLibSSE-NG SKSE plugins. This is a hybrid approach, where you can mix and match C++ with Rust as you see fit. The template builds a working SKSE plugin that loads into the game and logs menu open/close events.
 
 ## Getting started
 
@@ -38,6 +38,7 @@ CMake should trigger appropriate cargo builds, but it doesn't have the full list
 - I provide some string decoding in `bridge/strings.rs`. `cxx` assumes that any string data it's being given is a valid Rust string, and this will not be true for all Skyrim data. I've seen crashes from ISO-8859-9 codepage characters. So before passing names to Rust, decode into utf-8. My code can likely be improved.
 - Testing without the game running is possible if you do not pull in any functions that require the C++ side of the plugin. One trick is to implement live functions marked with `#[cfg(not(test))]` and then write a second test-specific version behind `#[cfg(test)]`. There are examples in `bridge/wrappers.rs`. Running `cargo test` runs the tests.
 - I pull some shenanigans so I can develop much of the Rust side of the plugin on my Mac laptop, where I have a very fast editor I like and can slouch with a cat on top of me while I work. You might not care about that. If you are Windows-only, you can rip those out. (See the logging initialization function for an example.)
+- The `CMakeLists.txt` file could probably be a lot better. I knew nothing about cmake when I started hitting it with a hammer to make it work.
 
 ## LICENSE
 
