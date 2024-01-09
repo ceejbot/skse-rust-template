@@ -1,11 +1,9 @@
-//! A consumer for the logging facade.
-
-//! Logging functions exposed to C++. There's an initialization function
-//! that must be called to tell the plugin where to log. The other functions
-//! are for C++ to use to share a log file with Rust. For now, C++ must pass
-//! a preformatted-string to these functions. This is wasteful, but exposing
-//! Rust macros to C++ is not possible.
-//! See the strings.rs file for related shenanigans.
+//! Logging functions exposed to C++ to initialize and unify logs from both sides.
+//!
+//! There's an initialization function that must be called in `main.cpp` to tell
+//! the plugin where to log. The other functions are for C++ to use to share a log
+//! file with Rust. For now, C++ must pass a preformatted-string to these functions.
+//! This is wasteful, but exposing Rust macros to C++ is not possible.
 
 use std::ffi::OsString;
 use std::fs::File;
@@ -15,8 +13,7 @@ use std::path::Path;
 
 use simplelog::*;
 
-// ---------- logging
-
+/// Create a log file in the directory SKSE wants us to, and initialize a logger.
 pub fn initialize_logging(_logdir: &cxx::CxxVector<u16>) {
     #[cfg(not(target_os = "windows"))]
     let chonky_path = OsString::from("placeholder");
@@ -46,22 +43,27 @@ pub fn initialize_logging(_logdir: &cxx::CxxVector<u16>) {
     );
 }
 
+/// For C++, log at the error level.
 pub fn log_error(message: String) {
     log::error!("{}", message);
 }
 
+/// For C++, log at the warn level.
 pub fn log_warn(message: String) {
     log::warn!("{}", message);
 }
 
+/// For C++, log at the info level.
 pub fn log_info(message: String) {
     log::info!("{}", message);
 }
 
+/// For C++, log at the debug level.
 pub fn log_debug(message: String) {
     log::debug!("{}", message);
 }
 
+/// For C++, log at the trace level.
 pub fn log_trace(message: String) {
     log::trace!("{}", message);
 }

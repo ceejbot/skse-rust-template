@@ -1,7 +1,7 @@
 #![deny(future_incompatible, clippy::unwrap_used)]
 #![warn(rust_2018_idioms, trivial_casts)]
 
-// See https://cxx.rs for documentation on how the cxx bridge works.
+//! The Rust library.
 
 pub mod bridge;
 
@@ -9,9 +9,13 @@ use bridge::cosave::*;
 use bridge::logs::*;
 use bridge::strings::*;
 
+/// This is the cxx bridge submodule. This is where all shared data types and
+/// functions are declared, so that the cxx macros can generate code for them.
+/// To see the generated code, look in `target/cxxbridge/skse-rust-template/src/`.
+/// There are more comments in the source file than show up here in the docs.
+/// See https://cxx.rs for full documentation on the cxx crate.
 #[cxx::bridge]
 pub mod plugin {
-
     // Shared data structures
 
     // If you want a type to be transparent to BOTH Rust and C++,
@@ -34,9 +38,7 @@ pub mod plugin {
     }
 
     extern "Rust" {
-        // Things Rust exposes to C++. Practical examples follow for things
-        // you are likely to want in your plugin.
-
+        // Things Rust exposes to C++. Practical examples follow for things you are likely to want in your plugin.
         // Cosave support. Called by cosave.cpp.
 
         /// Report the current version of the cosave data format.
@@ -107,11 +109,11 @@ pub mod plugin {
         fn lookupTranslation(key: &CxxString) -> String;
     }
 
+    // Here is an example of pulling in game types and exposing some of
+    // their methods to Rust. You might not need these specific types in your plugin,
+    // but this is the pattern to follow.
     #[namespace = "RE"]
     unsafe extern "C++" {
-        // Here is an example of pulling in game types and exposing some of
-        // their methods to Rust. You might not need these specific types in your plugin,
-        // but this is the pattern to follow.
         include!("PCH.h");
 
         /// The form object declared as a C++ type that is opaque to Rust.
