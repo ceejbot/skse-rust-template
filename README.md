@@ -25,7 +25,7 @@ CMake should trigger appropriate cargo builds, but it doesn't have the full list
 
 ## Repo layout
 
-* `src/main.cpp`: Registers with SKSE, sets up logging, hooks, papyrus native functions, and event sinks.
+* `src/main.cpp`: Registers with SKSE, sets up logging, calls all the setup code in `src/skse`.
 * `src/lib.rs`: Defines the interface between C++ and Rust using [cxx](https://cxx.rs). Has examples of many of the common patterns you're likely to use.
 * `src/bridge/`: Some conveniences in Rust for bridging C++ and Rust, most notably unified logging.
 * `src/skse/`: SKSE responsibilities, in C++. Has examples of setting up hooks, event sinks, papyrus functions, and registering for cosave events, all of which are delegated to Rust.
@@ -34,10 +34,10 @@ CMake should trigger appropriate cargo builds, but it doesn't have the full list
 ## Things to be noted
 
 - I'm using the approach of making my own fork of clib-NG and using a branch of that fork as a git submodule. You probably want to make your own fork. The two repos of interest for this are [alandtse's fork](https://github.com/alandtse/CommonLibVR/) (use the `ng` branch) and the [CharmedBaryon fork](https://github.com/CharmedBaryon/CommonLibSSE-NG).
-- I used [simplelog](https://lib.rs/crates/simplelog) for log-writing. You might want something else. This can easily be ripped out from `logs.rs`.
-- I provide some string decoding in `bridge/strings.rs`. `cxx` assumes that any string data it's being given is a valid Rust string, and this will not be true for all Skyrim data. I've seen crashes from ISO-8859-9 codepage characters. So before passing names to Rust, decode into utf-8. My code can likely be improved.
-- Testing without the game running is possible if you do not pull in any functions that require the C++ side of the plugin. One trick is to implement live functions marked with `#[cfg(not(test))]` and then write a second test-specific version behind `#[cfg(test)]`. There are examples in `bridge/wrappers.rs`. Running `cargo test` runs the tests.
-- I pull some shenanigans so I can develop much of the Rust side of the plugin on my Mac laptop, where I have a very fast editor I like and can slouch with a cat on top of me while I work. You might not care about that. If you are Windows-only, you can rip those out. (See the logging initialization function for an example.)
+- I used [simplelog](https://lib.rs/crates/simplelog) for log-writing. You might want something else. This can easily be replaced in `logs.rs`.
+- I provide some string wrangling in `bridge/strings.rs`. `cxx` assumes that any string data it's being given is a valid Rust string, aka a valid UTF-8 string, and this will not be true for all Skyrim data. I've seen crashes from ISO-8859-9 codepage characters. So before passing item names to Rust, decode them into UTF-8. (My code here can likely be improved. Removing a dep or two would trim down the code size.)
+- Testing without the game running is possible if you do not pull in any functions that require the C++ side of the plugin. One trick is to implement live functions marked with `#[cfg(not(test))]` and then write a second test-specific version behind `#[cfg(test)]`. There are examples of this trick in `bridge/wrappers.rs`. Running `cargo test` runs the example tests, which are some shallow tests of the string functions.
+- I pull some shenanigans so I can develop much of the Rust side of the plugin on my Mac laptop, where I have a very fast editor I like and can slouch with a cat on top of me while I work. You might not care about that. If you are Windows-only, you can remove those when you see them. (See the logging initialization function for an example.)
 - The `CMakeLists.txt` file could probably be a lot better. I knew nothing about cmake when I started hitting it with a hammer to make it work.
 
 ## LICENSE
