@@ -1,6 +1,5 @@
 //! Character encoding shenanigans. Bethesda is very bad at utf-8, I am told.
 
-use byte_slice_cast::AsSliceOf;
 use cxx::CxxVector;
 use textcode::{iso8859_15, iso8859_9};
 
@@ -52,17 +51,7 @@ pub fn convert_to_utf8(bytes: Vec<u8>) -> String {
             iso8859_15::decode(bytes.as_slice(), &mut dst);
             dst
         }
-        _ => {
-            let Ok(widebytes) = bytes.as_slice_of::<u16>() else {
-                return String::from_utf8_lossy(bytes.as_slice()).to_string();
-            };
-            let mut utf8bytes: Vec<u8> = vec![0; widebytes.len()];
-            let Ok(_c) = ucs2::decode(widebytes, &mut utf8bytes) else {
-                return String::from_utf8_lossy(bytes.as_slice()).to_string();
-            };
-            String::from_utf8(utf8bytes.clone())
-                .unwrap_or_else(|_| String::from_utf8_lossy(utf8bytes.as_slice()).to_string())
-        }
+        _ => String::from_utf8_lossy(bytes.as_slice()).to_string(),
     }
 }
 
@@ -96,20 +85,5 @@ mod tests {
         let utf8_version = "Sacrÿfev Tëliimi".to_string();
         let converted = convert_to_utf8(bytes.clone());
         assert_eq!(converted, utf8_version);
-    }
-
-    #[test]
-    fn ucs2_is_decoded() {
-        // UCS2 data might come from translation files. (Or I fear it might, anyway.
-        // I have not proven this yet.) This is a fixed-width encoding that pads 8-bit
-        // characters with 0. `chardet` guesses that this string is ascii, which is wrong.
-        let bytes = vec![
-            36, 0, 83, 0, 111, 0, 117, 0, 108, 0, 115, 0, 121, 0, 72, 0, 85, 0, 68, 0, 9, 0, 83, 0,
-            111, 0, 117, 0, 108, 0, 115, 0, 121, 0, 32, 0, 72, 0, 85, 0, 68, 0,
-        ];
-        assert_eq!(bytes.len(), 42);
-        let converted = convert_to_utf8(bytes.clone());
-        assert_eq!(converted.len(), bytes.len() / 2);
-        assert_eq!(converted, "$SoulsyHUD	Soulsy HUD");
     }
 }
