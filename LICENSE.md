@@ -2,7 +2,7 @@
 
 Contributor: C J Silverio
 
-Source Code: https://github.com/ceejbot/mcm-meta-helper
+Source Code: https://github.com/ceejbot/skse-rust-template
 
 ## Purpose
 
