@@ -3,6 +3,7 @@ edition      = "2021"
 name         = "skse-rust-template"
 rust-version = "1.71.1"
 version      = "0.1.0"
+license      = "ParityLicense-7.0"
 
 [lib]
 crate-type = ["staticlib"]
@@ -10,10 +11,10 @@ crate-type = ["staticlib"]
 [dependencies]
 chardet         = "0.2.4"
 cxx             = { version = "1.0.110", features = ["c++20"] }
+encoding-next = "0.3.0"
 log             = "0.4.20"
 rust-ini        = "0.20.0"
 simplelog       = "0.12.1"
-textcode        = "0.2.2"
 
 [build-dependencies]
 cxx-build = "1.0.110"
