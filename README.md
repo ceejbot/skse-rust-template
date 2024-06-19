@@ -17,8 +17,8 @@ If you install the [just](https://just.systems) command runner, you can type `ju
 To build by hand:
 
 ```sh
-cmake --preset build-vs2022-windows # or just cmake
-cmake --build --preset build-vs2022-windows --config Release  # or just build
+cmake --preset vs2022-windows # or just cmake
+cmake --build --preset vs2022-windows --config Release  # or just build
 ```
 
 CMake should trigger appropriate cargo builds, but it doesn't have the full list of rust source files so I usually run cargo as part of the `build` recipe. `cargo check` is also runnable separately. The `build.rs` file instructs cargo to build the `lib.rs.h` for the plugin specifically as well as `cxx.h` for the bridging types that Cxx uses. These are rebuilt when `lib.rs` changes, which should be the only trigger you need.
