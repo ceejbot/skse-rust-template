@@ -7,7 +7,7 @@ This is Ceej's template for setting up a repo for new Rust + CommonLibSSE-NG SKS
 1. Install Rust using [rustup](https://rustup.rs).
 2. Install [Visual Studio 2022](https://visualstudio.microsoft.com) with C++ compilers.
 3. Install [CMake](https://cmake.org/download/). (The command runner does this for you on targets with homebrew.)
-4. Install `ninja` to do something or other involving project generation.
+4. Install [ninja](https://ninja-build.org/) to do something or other involving project generation.
 5. Set up [vcpkg](https://github.com/microsoft/vcpkg). Set `VCPKG_ROOT` in a user environment variable pointing to the directory where you cloned the repo.
 6. Clone this template repo somewhere. `git init .` to start fresh with git.
 7. `git submodule update --init --recursive` to pull in the commonlib fork and its submodules.
